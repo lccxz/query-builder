@@ -2,6 +2,7 @@ require "./query-builder/*"
 
 module Query
   class Builder
+    @@backquote = ""
     @@escape_character = "\\"
 
     def initialize
@@ -174,7 +175,7 @@ module Query
       fields = datas.keys
       values = [] of String
       datas.values.each { |val| values << "#{escape(val)}" }
-      query = "INSERT INTO #{@table} (#{fields.join(", ")}) VALUES (#{values.join(", ")})"
+      query = "INSERT INTO #{@table} (#{@@backquote}#{fields.join("#{@@backquote}, #{@@backquote}")}#{@@backquote}) VALUES (#{values.join(", ")})"
       end_query query
     end
 
@@ -182,7 +183,7 @@ module Query
       query = "UPDATE #{@table} SET"
       fields = datas.keys
       values = [] of String
-      datas.values.map_with_index { |val, i| values << "#{fields[i]} = #{escape(val)}" }
+      datas.values.map_with_index { |val, i| values << "#{@@backquote}#{fields[i]}#{@@backquote} = #{escape(val)}" }
       query += " #{values.join(", ")}"
       query += " WHERE #{@where}" if !@where.empty?
       query += " ORDER BY #{@order_by}" if !@order_by.empty?
@@ -225,6 +226,10 @@ module Query
 
     def last_query
       @last_query
+    end
+
+    def self.escape_character=(character : String)
+      @@backquote = character
     end
 
     def self.escape_character=(character : String)
