@@ -228,7 +228,7 @@ module Query
       @last_query
     end
 
-    def self.escape_character=(character : String)
+    def self.backquote=(character : String)
       @@backquote = character
     end
 
