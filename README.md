@@ -1,4 +1,4 @@
-# query-builder
+# query-builder [![Build Status](https://travis-ci.org/liu-chong/query-builder.svg?branch=master)](https://travis-ci.org/liu-chong/query-builder)
 
 ```
                                          _           _ _     _           
