@@ -97,11 +97,11 @@ describe Query::Builder do
       "slug"    => "query-builder-for-crystal",
       "content" => "sql query builder library for crystal-lang...",
       "tags"    => "crystal, query, builder",
-      "time"    => Time.new(2016, 6, 21),
+      "time"    => Time.now,
       "status"  => 1,
     }
     query = builder.table("test").insert(data)
-    query.should eq "INSERT INTO test (title, slug, content, tags, time, status) VALUES ('query builder for Crystal', 'query-builder-for-crystal', 'sql query builder library for crystal-lang...', 'crystal, query, builder', '2016-06-21 00:00:00', '1')"
+    query.should eq "INSERT INTO test (title, slug, content, tags, time, status) VALUES ('query builder for Crystal', 'query-builder-for-crystal', 'sql query builder library for crystal-lang...', 'crystal, query, builder', '#{Time.now}', '1')"
   end
 
   it "insert method with nil data" do
@@ -111,10 +111,10 @@ describe Query::Builder do
       "slug"    => "query-builder-for-crystal",
       "content" => "sql query builder library for crystal-lang...",
       "tags"    => nil,
-      "time"    => Time.new(2016, 6, 21),
+      "time"    => Time.now,
     }
     query = builder.table("test").insert(data)
-    query.should eq "INSERT INTO test (title, slug, content, tags, time) VALUES ('query builder for Crystal', 'query-builder-for-crystal', 'sql query builder library for crystal-lang...', NULL, '2016-06-21 00:00:00')"
+    query.should eq "INSERT INTO test (title, slug, content, tags, time) VALUES ('query builder for Crystal', 'query-builder-for-crystal', 'sql query builder library for crystal-lang...', NULL, '#{Time.now}')"
   end
 
   it "update method" do
