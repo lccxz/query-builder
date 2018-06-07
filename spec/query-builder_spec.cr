@@ -112,9 +112,10 @@ describe Query::Builder do
       "content" => "sql query builder library for crystal-lang...",
       "tags"    => nil,
       "time"    => Time.now,
+      "created_at" => "now()"
     }
     query = builder.table("test").insert(data)
-    query.should eq "INSERT INTO test (title, slug, content, tags, time) VALUES ('query builder for Crystal', 'query-builder-for-crystal', 'sql query builder library for crystal-lang...', NULL, '#{Time.now}')"
+    query.should eq "INSERT INTO test (title, slug, content, tags, time, created_at) VALUES ('query builder for Crystal', 'query-builder-for-crystal', 'sql query builder library for crystal-lang...', NULL, '#{Time.now}', now())"
   end
 
   it "update method" do
@@ -125,9 +126,10 @@ describe Query::Builder do
       "content" => "Super Simple web framework for Crystal.",
       "tags"    => "crystal, framework, kemal",
       "status"  => 1,
+      "updated_at" => "now()"
     }
     query = builder.table("test").where("id", 17).update(data)
-    query.should eq "UPDATE test SET title = 'Kemal', slug = 'kemal-web-framework', content = 'Super Simple web framework for Crystal.', tags = 'crystal, framework, kemal', status = '1' WHERE id = '17'"
+    query.should eq "UPDATE test SET title = 'Kemal', slug = 'kemal-web-framework', content = 'Super Simple web framework for Crystal.', tags = 'crystal, framework, kemal', status = '1', updated_at = now() WHERE id = '17'"
   end
 
   it "update method with nil data" do

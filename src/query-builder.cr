@@ -174,7 +174,7 @@ module Query
     def insert(datas : Hash)
       fields = datas.keys
       values = [] of String
-      datas.values.each { |val| values << "#{escape(val)}" }
+      datas.values.each { |val| next values << "now()" if val == "now()"; values << "#{escape(val)}" }
       query = "INSERT INTO #{@table} (#{@@backquote}#{fields.join("#{@@backquote}, #{@@backquote}")}#{@@backquote}) VALUES (#{values.join(", ")})"
       end_query query
     end
@@ -183,7 +183,9 @@ module Query
       query = "UPDATE #{@table} SET"
       fields = datas.keys
       values = [] of String
-      datas.values.map_with_index { |val, i| values << "#{@@backquote}#{fields[i]}#{@@backquote} = #{escape(val)}" }
+      datas.values.map_with_index { |val, i|
+        next values << "#{fields[i]} = now()" if val == "now()"
+        values << "#{@@backquote}#{fields[i]}#{@@backquote} = #{escape(val)}" }
       query += " #{values.join(", ")}"
       query += " WHERE #{@where}" if !@where.empty?
       query += " ORDER BY #{@order_by}" if !@order_by.empty?
